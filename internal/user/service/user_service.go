@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
 	"github.com/username/project-name/config"
 	"github.com/username/project-name/domain/model"
 	"github.com/username/project-name/internal/user/dto"
@@ -18,7 +19,7 @@ type UserService interface {
 	Login(req *dto.LoginRequest) (*dto.LoginResponse, error)
 	RefreshToken(req *dto.RefreshTokenRequest) (*dto.LoginResponse, error)
 	ListUsers(page, limit int) ([]dto.UserResponse, int64, error)
-	GetUserDetail(id uint) (*dto.UserResponse, error)
+	GetUserDetail(id uuid.UUID) (*dto.UserResponse, error)
 }
 
 type userService struct {
@@ -88,7 +89,7 @@ func (s *userService) Login(req *dto.LoginRequest) (*dto.LoginResponse, error) {
 	expiredAt := time.Now().Add(time.Hour * time.Duration(expHours)).Unix()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub":   user.ID,
+		"sub":   user.ID.String(),
 		"email": user.Email,
 		"exp":   expiredAt,
 	})
@@ -106,7 +107,7 @@ func (s *userService) Login(req *dto.LoginRequest) (*dto.LoginResponse, error) {
 	refreshExpiredAt := time.Now().Add(time.Hour * time.Duration(refreshExpHours)).Unix()
 
 	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub":   user.ID,
+		"sub":   user.ID.String(),
 		"exp":   refreshExpiredAt,
 		"type":  "refresh",
 	})
@@ -141,11 +142,14 @@ func (s *userService) RefreshToken(req *dto.RefreshTokenRequest) (*dto.LoginResp
 		return nil, errors.New("invalid token claims")
 	}
 
-	userIDFloat, ok := claims["sub"].(float64)
+	userIDStr, ok := claims["sub"].(string)
 	if !ok {
 		return nil, errors.New("invalid user ID in token")
 	}
-	userID := uint(userIDFloat)
+	userID, err := uuid.Parse(userIDStr)
+	if err != nil {
+		return nil, errors.New("invalid user ID in token")
+	}
 
 	user, err := s.repo.FindByID(userID)
 	if err != nil {
@@ -163,7 +167,7 @@ func (s *userService) RefreshToken(req *dto.RefreshTokenRequest) (*dto.LoginResp
 	expiredAt := time.Now().Add(time.Hour * time.Duration(expHours)).Unix()
 
 	newToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub":   user.ID,
+		"sub":   user.ID.String(),
 		"email": user.Email,
 		"exp":   expiredAt,
 	})
@@ -181,7 +185,7 @@ func (s *userService) RefreshToken(req *dto.RefreshTokenRequest) (*dto.LoginResp
 	refreshExpiredAt := time.Now().Add(time.Hour * time.Duration(refreshExpHours)).Unix()
 
 	newRefreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub":   user.ID,
+		"sub":   user.ID.String(),
 		"exp":   refreshExpiredAt,
 		"type":  "refresh",
 	})
@@ -219,7 +223,7 @@ func (s *userService) ListUsers(page, limit int) ([]dto.UserResponse, int64, err
 	return res, total, nil
 }
 
-func (s *userService) GetUserDetail(id uint) (*dto.UserResponse, error) {
+func (s *userService) GetUserDetail(id uuid.UUID) (*dto.UserResponse, error) {
 	user, err := s.repo.FindByID(id)
 	if err != nil {
 		return nil, err

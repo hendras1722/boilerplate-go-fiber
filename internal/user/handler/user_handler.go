@@ -2,7 +2,8 @@ package handler
 
 import (
 	"math"
-	"strconv"
+
+	"github.com/google/uuid"
 
 	"github.com/gofiber/fiber/v3"
 	domainDto "github.com/username/project-name/domain/dto"
@@ -94,12 +95,12 @@ func (h *userHandler) List(c fiber.Ctx) error {
 
 func (h *userHandler) Detail(c fiber.Ctx) error {
 	idParam := c.Params("id")
-	id, err := strconv.ParseUint(idParam, 10, 32)
+	id, err := uuid.Parse(idParam)
 	if err != nil {
 		return domainDto.ErrorResponse(c, "Invalid user ID", nil, fiber.StatusBadRequest)
 	}
 
-	user, err := h.svc.GetUserDetail(uint(id))
+	user, err := h.svc.GetUserDetail(id)
 	if err != nil {
 		if err.Error() == "user not found" {
 			return domainDto.ErrorResponse(c, "User not found", nil, fiber.StatusNotFound)

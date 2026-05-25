@@ -3,6 +3,7 @@ package repository
 import (
 	"errors"
 
+	"github.com/google/uuid"
 	"github.com/username/project-name/domain/model"
 	"gorm.io/gorm"
 )
@@ -11,7 +12,7 @@ type UserRepository interface {
 	Create(user *model.User) error
 	FindByEmail(email string) (*model.User, error)
 	FindAll(page, limit int) ([]*model.User, int64, error)
-	FindByID(id uint) (*model.User, error)
+	FindByID(id uuid.UUID) (*model.User, error)
 }
 
 type userRepository struct {
@@ -59,7 +60,7 @@ func (r *userRepository) FindAll(page, limit int) ([]*model.User, int64, error) 
 	return users, total, nil
 }
 
-func (r *userRepository) FindByID(id uint) (*model.User, error) {
+func (r *userRepository) FindByID(id uuid.UUID) (*model.User, error) {
 	var user model.User
 	err := r.db.First(&user, id).Error
 	if err != nil {
