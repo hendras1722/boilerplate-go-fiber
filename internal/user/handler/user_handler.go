@@ -82,12 +82,12 @@ func (h *userHandler) List(c fiber.Ctx) error {
 		return domainDto.ErrorResponse(c, "Failed to fetch users", err.Error(), fiber.StatusInternalServerError)
 	}
 
-	totalPages := int(math.Ceil(float64(total) / float64(limit)))
+	pages := int(math.Ceil(float64(total) / float64(limit)))
 
 	meta := domainDto.Meta{
-		Total:      total,
-		Limit:      limit,
-		TotalPages: totalPages,
+		Total: total,
+		Limit: limit,
+		Pages: pages,
 	}
 
 	return domainDto.SuccessResponseWithMeta(c, "Users fetched successfully", users, meta, fiber.StatusOK)

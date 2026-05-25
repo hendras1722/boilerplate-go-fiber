@@ -3,9 +3,9 @@ package dto
 import "github.com/gofiber/fiber/v3"
 
 type Meta struct {
-	Total      int64 `json:"total"`
-	Limit      int   `json:"limit"`
-	TotalPages int   `json:"totalPages"`
+	Total int64 `json:"total"`
+	Limit int   `json:"limit"`
+	Pages int   `json:"pages"`
 }
 
 type StatusResponse struct {

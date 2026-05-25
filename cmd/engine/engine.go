@@ -5,17 +5,14 @@ import (
 	"github.com/gofiber/fiber/v3/middleware/logger"
 	"github.com/gofiber/fiber/v3/middleware/recover"
 	"github.com/username/project-name/config"
+	"github.com/username/project-name/domain/routes"
 	"gorm.io/gorm"
 
+	"github.com/username/project-name/internal/cronjob"
 	exampleHandler "github.com/username/project-name/internal/example-module/handler"
 	exampleRepo "github.com/username/project-name/internal/example-module/repository"
 	exampleRoute "github.com/username/project-name/internal/example-module/route"
 	exampleSvc "github.com/username/project-name/internal/example-module/service"
-
-	userHandler "github.com/username/project-name/internal/user/handler"
-	userRepo "github.com/username/project-name/internal/user/repository"
-	userRoute "github.com/username/project-name/internal/user/route"
-	userSvc "github.com/username/project-name/internal/user/service"
 )
 
 func SetupApp(cfg *config.Config, db *gorm.DB) *fiber.App {
@@ -27,18 +24,19 @@ func SetupApp(cfg *config.Config, db *gorm.DB) *fiber.App {
 	app.Use(logger.New())
 	app.Use(recover.New())
 
-	// Example Module Dependency Injection
-	exHandler := exampleHandler.NewExampleHandler(exampleSvc.NewExampleService(exampleRepo.NewExampleRepository(db)))
+	// Setup Cron Jobs
+	cronJob := cronjob.SetupCronJobs(db)
+	cronJob.Start()
 
-	// User Module Dependency Injection
-	usrHandler := userHandler.NewUserHandler(userSvc.NewUserService(userRepo.NewUserRepository(db), cfg))
+	exHandler := exampleHandler.NewExampleHandler(exampleSvc.NewExampleService(exampleRepo.NewExampleRepository(db)))
 
 	// Routing
 	api := app.Group("/api")
 
-	// Register Routes
 	exampleRoute.RegisterRoute(api, exHandler)
-	userRoute.RegisterRoute(api, usrHandler, cfg)
+
+	// Register Routes
+	routes.RegisterUserRoutes(api, cfg, db)
 
 	return app
 }

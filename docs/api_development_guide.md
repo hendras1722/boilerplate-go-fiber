@@ -247,7 +247,26 @@ func RegisterRoute(router fiber.Router, h handler.UserHandler) {
 }
 ```
 
-### B. Registrasi di `cmd/engine/engine.go`
+### B. Add Routes to `domain/routes/`
+```go
+package routes
+
+import (
+	"github.com/gofiber/fiber/v3"
+	"github.com/username/project-name/config"
+	"github.com/username/project-name/internal/user/handler"
+	"github.com/username/project-name/internal/user/repository"
+	"github.com/username/project-name/internal/user/service"
+	"gorm.io/gorm"
+)
+
+func RegisterUserRoutes(api fiber.Router, cfg *config.Config, db *gorm.DB) {
+	usrHandler := handler.NewUserHandler(service.NewUserService(repository.NewUserRepository(db), cfg))
+	route.RegisterRoute(api, usrHandler, cfg)
+}
+```
+
+### C. Registrasi di `cmd/engine/engine.go`
 Selanjutnya, hubungkan semua komponen (DB -> Repo -> Service -> Handler) dan panggil fungsi *route* di `SetupApp`.
 
 ```go
@@ -281,7 +300,8 @@ func SetupApp(cfg *config.Config, db *gorm.DB) *fiber.App {
     api := app.Group("/api")
 
     // 3. Register Routes
-    userRoute.RegisterRoute(api, usrHandler)
+    
+	routes.RegisterUserRoutes(api, cfg, db)
 
     return app
 }
