@@ -306,3 +306,28 @@ func SetupApp(cfg *config.Config, db *gorm.DB) *fiber.App {
     return app
 }
 ```
+
+### D. Using Validation
+
+```go
+func (h *userHandler) Login(c fiber.Ctx) error {
+	var req dto.LoginRequest
+	if err := c.Bind().JSON(&req); err != nil {
+		return domainDto.ErrorResponse(c, "Invalid request body", err.Error(), fiber.StatusBadRequest)
+	}
+
+	validate := validator.New()
+	err := validate.Struct(req)
+	if err != nil {
+		errMsgs := domainDto.FormatValidationError(err)
+		return domainDto.ErrorResponse(c, "Invalid request body", errMsgs, fiber.StatusBadRequest)
+	}
+
+	res, err := h.svc.Login(&req)
+	if err != nil {
+		return domainDto.ErrorResponse(c, "Login failed", err.Error(), fiber.StatusUnauthorized)
+	}
+
+	return domainDto.SuccessResponse(c, "Login successful", res, fiber.StatusOK)
+}
+```

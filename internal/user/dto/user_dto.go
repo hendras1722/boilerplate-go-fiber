@@ -9,8 +9,8 @@ type RegisterRequest struct {
 }
 
 type LoginRequest struct {
-	Email    string `json:"email" validate:"required,email"`
-	Password string `json:"password" validate:"required"`
+	Email    string `json:"email" validate:"required,email" form:"email"`
+	Password string `json:"password" validate:"required,min=6" form:"password"`
 }
 
 type RefreshTokenRequest struct {
@@ -27,7 +27,7 @@ type LoginResponse struct {
 type UserResponse struct {
 	ID        uuid.UUID `json:"id"`
 	Name      string    `json:"name"`
-	Email     string `json:"email"`
-	CreatedAt string `json:"created_at"`
-	UpdatedAt string `json:"updated_at"`
+	Email     string    `json:"email"`
+	CreatedAt string    `json:"created_at"`
+	UpdatedAt string    `json:"updated_at"`
 }

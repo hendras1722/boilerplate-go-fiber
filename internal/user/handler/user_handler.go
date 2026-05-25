@@ -3,6 +3,7 @@ package handler
 import (
 	"math"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
 
 	"github.com/gofiber/fiber/v3"
@@ -32,7 +33,7 @@ func NewUserHandler(svc service.UserService) UserHandler {
 
 func (h *userHandler) Register(c fiber.Ctx) error {
 	var req dto.RegisterRequest
-	if err := c.Bind().JSON(&req); err != nil {
+	if err := c.Bind().Body(&req); err != nil {
 		return domainDto.ErrorResponse(c, "Invalid request body", err.Error(), fiber.StatusBadRequest)
 	}
 
@@ -48,8 +49,15 @@ func (h *userHandler) Register(c fiber.Ctx) error {
 
 func (h *userHandler) Login(c fiber.Ctx) error {
 	var req dto.LoginRequest
-	if err := c.Bind().JSON(&req); err != nil {
+	if err := c.Bind().Body(&req); err != nil {
 		return domainDto.ErrorResponse(c, "Invalid request body", err.Error(), fiber.StatusBadRequest)
+	}
+
+	validate := validator.New()
+	err := validate.Struct(req)
+	if err != nil {
+		errMsgs := domainDto.FormatValidationError(err)
+		return domainDto.ErrorResponse(c, "Invalid request body", errMsgs, fiber.StatusBadRequest)
 	}
 
 	res, err := h.svc.Login(&req)
@@ -62,7 +70,7 @@ func (h *userHandler) Login(c fiber.Ctx) error {
 
 func (h *userHandler) RefreshToken(c fiber.Ctx) error {
 	var req dto.RefreshTokenRequest
-	if err := c.Bind().JSON(&req); err != nil {
+	if err := c.Bind().Body(&req); err != nil {
 		return domainDto.ErrorResponse(c, "Invalid request body", err.Error(), fiber.StatusBadRequest)
 	}
 
