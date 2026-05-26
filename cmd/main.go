@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 
-	"github.com/username/project-name/cmd/engine"
-	"github.com/username/project-name/config"
-	"github.com/username/project-name/database"
+	"github.com/username/msa-boilerplate-go/cmd/engine"
+	"github.com/username/msa-boilerplate-go/config"
+	"github.com/username/msa-boilerplate-go/database"
 )
 
 func main() {

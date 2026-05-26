@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/gofiber/fiber/v3"
-	exampleSvc "github.com/username/project-name/internal/example-module/service"
+	exampleSvc "github.com/username/msa-boilerplate-go/internal/example-module/service"
 )
 
 type ExampleHandler interface {

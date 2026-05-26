@@ -2,11 +2,11 @@ package routes
 
 import (
 	"github.com/gofiber/fiber/v3"
-	"github.com/username/project-name/config"
-	"github.com/username/project-name/internal/user/handler"
-	"github.com/username/project-name/internal/user/repository"
-	"github.com/username/project-name/internal/user/route"
-	"github.com/username/project-name/internal/user/service"
+	"github.com/username/msa-boilerplate-go/config"
+	"github.com/username/msa-boilerplate-go/internal/user/handler"
+	"github.com/username/msa-boilerplate-go/internal/user/repository"
+	"github.com/username/msa-boilerplate-go/internal/user/route"
+	"github.com/username/msa-boilerplate-go/internal/user/service"
 	"gorm.io/gorm"
 )
 

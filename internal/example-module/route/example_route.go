@@ -2,7 +2,7 @@ package route
 
 import (
 	"github.com/gofiber/fiber/v3"
-	"github.com/username/project-name/internal/example-module/handler"
+	"github.com/username/msa-boilerplate-go/internal/example-module/handler"
 )
 
 func RegisterRoute(router fiber.Router, h handler.ExampleHandler) {

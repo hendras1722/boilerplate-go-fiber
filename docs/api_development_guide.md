@@ -4,10 +4,21 @@ Panduan ini disesuaikan sepenuhnya dengan standar arsitektur dan teknologi yang 
 - **Framework Web**: `github.com/gofiber/fiber/v3` (Fiber v3)
 - **ORM / Database**: `gorm.io/gorm` (GORM)
 - **Struktur Response**: Menggunakan utilitas `domainDto` standar proyek.
-
+- **Feature**: 
+    - **Auto generate**: `sh script/make_api.sh [module_name]`
+    - **CronJob**: Available via `internal/cronjob`
+    - **Logging**: Available via `internal/logger`
+    
 Dalam Clean Architecture, alur pembuatan disarankan menggunakan pola **Bottom-Up** (dari inti/database ke luar/HTTP). Berikut langkah-langkahnya:
 
+## AUTO GENERATE
+
+Script: `sh script/make_api.sh [module_name]`
+Example: `sh script/make_api.sh product`
+
 ---
+
+## Manual Development
 
 ## 1. Model / Entity (`domain/model/`)
 Langkah pertama adalah mendefinisikan entitas utama. Ini adalah representasi tabel di database, lengkap dengan *tag* GORM dan JSON.
@@ -67,7 +78,7 @@ package repository
 import (
     "errors"
 
-    "github.com/username/project-name/domain/model"
+    "github.com/username/msa-boilerplate-go/domain/model"
     "gorm.io/gorm"
 )
 
@@ -120,9 +131,9 @@ package service
 import (
     "errors"
 
-    "github.com/username/project-name/domain/model"
-    "github.com/username/project-name/internal/user/dto"
-    "github.com/username/project-name/internal/user/repository"
+    "github.com/username/msa-boilerplate-go/domain/model"
+    "github.com/username/msa-boilerplate-go/internal/user/dto"
+    "github.com/username/msa-boilerplate-go/internal/user/repository"
 )
 
 // 1. Interface
@@ -182,9 +193,9 @@ package handler
 
 import (
     "github.com/gofiber/fiber/v3"
-    domainDto "github.com/username/project-name/domain/dto"
-    "github.com/username/project-name/internal/user/dto"
-    "github.com/username/project-name/internal/user/service"
+    domainDto "github.com/username/msa-boilerplate-go/domain/dto"
+    "github.com/username/msa-boilerplate-go/internal/user/dto"
+    "github.com/username/msa-boilerplate-go/internal/user/service"
 )
 
 // 1. Interface
@@ -238,7 +249,7 @@ package route
 
 import (
     "github.com/gofiber/fiber/v3"
-    "github.com/username/project-name/internal/user/handler"
+    "github.com/username/msa-boilerplate-go/internal/user/handler"
 )
 
 func RegisterRoute(router fiber.Router, h handler.UserHandler) {
@@ -253,10 +264,10 @@ package routes
 
 import (
 	"github.com/gofiber/fiber/v3"
-	"github.com/username/project-name/config"
-	"github.com/username/project-name/internal/user/handler"
-	"github.com/username/project-name/internal/user/repository"
-	"github.com/username/project-name/internal/user/service"
+	"github.com/username/msa-boilerplate-go/config"
+	"github.com/username/msa-boilerplate-go/internal/user/handler"
+	"github.com/username/msa-boilerplate-go/internal/user/repository"
+	"github.com/username/msa-boilerplate-go/internal/user/service"
 	"gorm.io/gorm"
 )
 
@@ -274,14 +285,14 @@ package engine
 
 import (
     "github.com/gofiber/fiber/v3"
-    "github.com/username/project-name/config"
+    "github.com/username/msa-boilerplate-go/config"
     "gorm.io/gorm"
 
     // Import modul
-    userHandler "github.com/username/project-name/internal/user/handler"
-    userRepo "github.com/username/project-name/internal/user/repository"
-    userRoute "github.com/username/project-name/internal/user/route"
-    userSvc "github.com/username/project-name/internal/user/service"
+    userHandler "github.com/username/msa-boilerplate-go/internal/user/handler"
+    userRepo "github.com/username/msa-boilerplate-go/internal/user/repository"
+    userRoute "github.com/username/msa-boilerplate-go/internal/user/route"
+    userSvc "github.com/username/msa-boilerplate-go/internal/user/service"
 )
 
 func SetupApp(cfg *config.Config, db *gorm.DB) *fiber.App {

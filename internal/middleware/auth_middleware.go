@@ -5,8 +5,8 @@ import (
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/username/project-name/config"
-	"github.com/username/project-name/domain/dto"
+	"github.com/username/msa-boilerplate-go/config"
+	"github.com/username/msa-boilerplate-go/domain/dto"
 )
 
 func AuthMiddleware(cfg *config.Config) fiber.Handler {

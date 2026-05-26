@@ -7,10 +7,10 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
-	"github.com/username/project-name/config"
-	"github.com/username/project-name/domain/model"
-	"github.com/username/project-name/internal/user/dto"
-	"github.com/username/project-name/internal/user/repository"
+	"github.com/username/msa-boilerplate-go/config"
+	"github.com/username/msa-boilerplate-go/domain/model"
+	"github.com/username/msa-boilerplate-go/internal/user/dto"
+	"github.com/username/msa-boilerplate-go/internal/user/repository"
 	"golang.org/x/crypto/bcrypt"
 )
 

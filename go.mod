@@ -1,4 +1,4 @@
-module github.com/username/project-name
+module github.com/username/msa-boilerplate-go
 
 go 1.25.0
 

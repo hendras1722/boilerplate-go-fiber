@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	"github.com/google/uuid"
-	"github.com/username/project-name/domain/model"
+	"github.com/username/msa-boilerplate-go/domain/model"
 	"gorm.io/gorm"
 )
 

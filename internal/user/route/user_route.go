@@ -2,9 +2,9 @@ package route
 
 import (
 	"github.com/gofiber/fiber/v3"
-	"github.com/username/project-name/config"
-	"github.com/username/project-name/internal/middleware"
-	"github.com/username/project-name/internal/user/handler"
+	"github.com/username/msa-boilerplate-go/config"
+	"github.com/username/msa-boilerplate-go/internal/middleware"
+	"github.com/username/msa-boilerplate-go/internal/user/handler"
 )
 
 func RegisterRoute(router fiber.Router, h handler.UserHandler, cfg *config.Config) {

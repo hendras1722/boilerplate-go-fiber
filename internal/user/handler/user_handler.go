@@ -7,10 +7,10 @@ import (
 	"github.com/google/uuid"
 
 	"github.com/gofiber/fiber/v3"
-	domainDto "github.com/username/project-name/domain/dto"
-	"github.com/username/project-name/domain/utils"
-	"github.com/username/project-name/internal/user/dto"
-	"github.com/username/project-name/internal/user/service"
+	domainDto "github.com/username/msa-boilerplate-go/domain/dto"
+	"github.com/username/msa-boilerplate-go/domain/utils"
+	"github.com/username/msa-boilerplate-go/internal/user/dto"
+	"github.com/username/msa-boilerplate-go/internal/user/service"
 )
 
 type UserHandler interface {

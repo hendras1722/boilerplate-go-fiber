@@ -4,15 +4,15 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/logger"
 	"github.com/gofiber/fiber/v3/middleware/recover"
-	"github.com/username/project-name/config"
-	"github.com/username/project-name/domain/routes"
+	"github.com/username/msa-boilerplate-go/config"
+	"github.com/username/msa-boilerplate-go/domain/routes"
 	"gorm.io/gorm"
 
-	"github.com/username/project-name/internal/cronjob"
-	exampleHandler "github.com/username/project-name/internal/example-module/handler"
-	exampleRepo "github.com/username/project-name/internal/example-module/repository"
-	exampleRoute "github.com/username/project-name/internal/example-module/route"
-	exampleSvc "github.com/username/project-name/internal/example-module/service"
+	"github.com/username/msa-boilerplate-go/internal/cronjob"
+	exampleHandler "github.com/username/msa-boilerplate-go/internal/example-module/handler"
+	exampleRepo "github.com/username/msa-boilerplate-go/internal/example-module/repository"
+	exampleRoute "github.com/username/msa-boilerplate-go/internal/example-module/route"
+	exampleSvc "github.com/username/msa-boilerplate-go/internal/example-module/service"
 )
 
 func SetupApp(cfg *config.Config, db *gorm.DB) *fiber.App {
@@ -37,6 +37,5 @@ func SetupApp(cfg *config.Config, db *gorm.DB) *fiber.App {
 
 	// Register Routes
 	routes.RegisterUserRoutes(api, cfg, db)
-
 	return app
 }

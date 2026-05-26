@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/username/project-name/internal/example-module/dto"
-	exampleRepo "github.com/username/project-name/internal/example-module/repository"
+	"github.com/username/msa-boilerplate-go/internal/example-module/dto"
+	exampleRepo "github.com/username/msa-boilerplate-go/internal/example-module/repository"
 )
 
 type ExampleService interface {

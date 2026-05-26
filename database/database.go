@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/username/project-name/config"
-	"github.com/username/project-name/domain/model"
+	"github.com/username/msa-boilerplate-go/config"
+	"github.com/username/msa-boilerplate-go/domain/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
